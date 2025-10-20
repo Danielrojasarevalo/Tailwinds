@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sector Agroindustria Cafetera — FET</title>
+    <!-- Tailwind CSS compilado -->
+    <link rel="stylesheet" href="css/output.css">
+    <style>
+      /* Custom palette mapped to Tailwind colors using CSS variables for convenience */
+      :root{
+        --verde-oscuro:#2a8837; /* dark green */
+        --verde-claro:#9CCF9B;  /* light green */
+        --cafe:#6B3E2A; /* coffee brown */
+        --crema:#F7F1E6; /* cream */
+      }
+      /* small shadow background for the page */
+      .page-bg{box-shadow:0 8px 40px rgba(0,0,0,0.25);}
+      /* Smooth scroll reveal simple animation */
+      .reveal{opacity:0; transform:translateY(18px); transition:all .7s ease-in-out;}
+      .reveal.visible{opacity:1; transform:none}
+      /* Modal styles */
+      .modal-backdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.7);
+        backdrop-filter:blur(4px);
+        z-index:100;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        opacity:0;
+        pointer-events:none;
+        transition:opacity 0.3s ease;
+      }
+      .modal-backdrop.active{opacity:1; pointer-events:all;}
+      .modal-content{
+        background:white;
+        border-radius:1.5rem;
+        max-width:90%;
+        width:600px;
+        max-height:90vh;
+        overflow-y:auto;
+        transform:scale(0.9) translateY(20px);
+        transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .modal-backdrop.active .modal-content{transform:scale(1) translateY(0);}
+      /* Card hover effects */
+      .season-card{
+        cursor:pointer;
+        transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .season-card:hover{
+        transform:translateY(-8px) scale(1.02);
+        box-shadow:0 20px 50px rgba(0,0,0,0.2);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen antialiased text-gray-800" >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 page-bg bg-[color:var(--crema)] rounded-2xl mt-8 mb-16 overflow-hidden">
+      <!-- Navbar -->
+      <header class="fixed left-1/2 -translate-x-1/2 top-4 w-[calc(100%-2rem)] sm:w-[calc(100%-4rem)] max-w-7xl z-50">
+        <nav class="bg-[color:var(--verde-oscuro)]/80 backdrop-blur rounded-2xl shadow-lg px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-[color:var(--verde-claro)] flex items-center justify-center overflow-hidden ring-2 ring-[color:var(--crema)]">
+              <img src="img/logo.png" alt="logo" class="object-cover w-full h-full" />
+            </div>
+            <span class="text-crema font-semibold text-lg text-[color:var(--crema)]">FET Café</span>
+          </div>
+
+          <div class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="text-[color:var(--verde-claro)] hover:text-white transition font-semibold">Inicio</a>
+            <a href="nosotros.html" class="text-[color:var(--crema)] hover:text-[color:var(--verde-claro)] transition">Nosotros</a>
+            <a href="#servicios" class="text-[color:var(--crema)] hover:text-[color:var(--verde-claro)] transition">Servicios</a>
+            <a href="#temporadas" class="text-[color:var(--crema)] hover:text-[color:var(--verde-claro)] transition">Temporadas</a>
+            <a href="contactanos.html" class="text-[color:var(--crema)] hover:text-[color:var(--verde-claro)] transition">Contacto</a>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a href="#login" class="hidden sm:inline-block bg-[color:var(--crema)] text-[color:var(--verde-oscuro)] px-4 py-2 rounded-full font-medium hover:scale-105 transition duration-300">Iniciar sesión</a>
+
+            <!-- Mobile menu button -->
+            <button id="menuBtn" class="md:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[color:var(--crema)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        <!-- Mobile dropdown -->
+        <div id="mobileMenu" class="hidden mt-2 bg-[color:var(--verde-oscuro)]/95 rounded-2xl shadow-lg p-4">
+          <a href="index.html" class="block py-2 px-3 text-[color:var(--verde-claro)] rounded bg-white/5 font-semibold">Inicio</a>
+          <a href="nosotros.html" class="block py-2 px-3 text-[color:var(--crema)] rounded hover:bg-white/5">Nosotros</a>
+          <a href="#servicios" class="block py-2 px-3 text-[color:var(--crema)] rounded hover:bg-white/5">Servicios</a>
+          <a href="#temporadas" class="block py-2 px-3 text-[color:var(--crema)] rounded hover:bg-white/5">Temporadas</a>
+          <a href="contactanos.html" class="block py-2 px-3 text-[color:var(--crema)] rounded hover:bg-white/5">Contacto</a>
+          <a href="#login" class="block mt-2 text-[color:var(--verde-oscuro)] bg-[color:var(--crema)] text-center py-2 rounded-full font-medium">Iniciar sesión</a>
+        </div>
+      </header>
+
+      <main class="pt-28 pb-12">
+        <!-- Hero -->
+        <section id="inicio" class="relative rounded-b-3xl overflow-hidden">
+          <div class="h-96 sm:h-[520px] relative">
+            <img src="img/cafe_tostado.png" alt="cafetales" class="absolute inset-0 w-full h-full object-cover brightness-75" />
+            <div class="absolute inset-0 bg-black/40"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50"></div>
+
+            <div class="absolute inset-0 flex items-center justify-center px-6">
+              <div class="text-center max-w-3xl text-white reveal" id="heroText">
+                <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight drop-shadow-lg">Sector Agroindustria Cafetera</h1>
+                <p class="mt-4 text-lg sm:text-2xl opacity-90">Nuestro compromiso con la calidad y la sostenibilidad</p>
+                <div class="mt-6 flex justify-center gap-4">
+                  <a href="#servicios" class="inline-block bg-[color:var(--verde-claro)] text-[color:var(--verde-oscuro)] px-6 py-3 rounded-full font-semibold shadow hover:scale-105 hover:shadow-2xl transition duration-300">Conoce más</a>
+                  <a href="#temporadas" class="inline-block border border-[color:var(--crema)] text-[color:var(--crema)] px-6 py-3 rounded-full font-medium hover:bg-white/10 transition duration-300">Ver temporadas</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Services -->
+        <section id="servicios" class="mt-12 reveal px-2 sm:px-6">
+          <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-[color:var(--verde-oscuro)]">Nuestros Servicios</h2>
+            <p class="mt-2 text-gray-600">Soluciones técnicas y acompañamiento para caficultores.</p>
+
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <!-- Card 1 -->
+              <div class="bg-white rounded-2xl p-6 shadow transition transform hover:-translate-y-2 hover:shadow-lg duration-500">
+                <div class="w-14 h-14 bg-[color:var(--verde-claro)] text-[color:var(--verde-oscuro)] rounded-lg flex items-center justify-center text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <h3 class="mt-4 font-semibold text-lg">Medición de pH</h3>
+                <p class="mt-2 text-sm text-gray-600">Control de pH del suelo para garantizar la salud del cultivo y la calidad del grano.</p>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="bg-white rounded-2xl p-6 shadow transition transform hover:-translate-y-2 hover:shadow-lg duration-500">
+                <div class="w-14 h-14 bg-[color:var(--crema)] text-[color:var(--cafe)] rounded-lg flex items-center justify-center text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <h3 class="mt-4 font-semibold text-lg">Recomendaciones</h3>
+                <p class="mt-2 text-sm text-gray-600">Guías técnicas y recomendaciones personalizadas para caficultores.</p>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="bg-white rounded-2xl p-6 shadow transition transform hover:-translate-y-2 hover:shadow-lg duration-500">
+                <div class="w-14 h-14 bg-[color:var(--cafe)] text-[color:var(--crema)] rounded-lg flex items-center justify-center text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16v12H4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <h3 class="mt-4 font-semibold text-lg">Optimización</h3>
+                <p class="mt-2 text-sm text-gray-600">Mejoras en prácticas agrícolas para incrementar productividad y sostenibilidad.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why Coffee -->
+        <section id="nosotros" class="mt-14 reveal">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-4">
+            <div>
+              <img src="img/planta del cafe.png" alt="campo" class="w-full h-72 object-cover rounded-xl shadow-lg" />
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-[color:var(--verde-oscuro)]">¿Por qué el café?</h3>
+              <p class="mt-4 text-gray-700">El café no solo es un cultivo, es tejido social y motor económico. Genera empleo, sostiene comunidades rurales y es parte esencial de nuestra identidad. Apoyar al caficultor es invertir en futuro sostenible y prosperidad local.</p>
+              <p class="mt-4 text-gray-700">Trabajamos con prácticas que mejoran la calidad del grano, protegen el suelo y aumentan el ingreso de las familias caficultoras.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why choose us -->
+        <section class="mt-14 reveal px-4">
+          <div class="max-w-5xl mx-auto text-center">
+            <h3 class="text-2xl font-bold text-[color:var(--verde-oscuro)]">¿Por qué elegirnos?</h3>
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-6 text-sm">
+              <div class="bg-white rounded-xl p-4 shadow flex flex-col items-center gap-2">
+                <div class="text-2xl">🇨🇴</div>
+                <div class="font-semibold">Empresa colombiana</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 shadow flex flex-col items-center gap-2">
+                <div class="text-2xl">✅</div>
+                <div class="font-semibold">Mejor calidad</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 shadow flex flex-col items-center gap-2">
+                <div class="text-2xl">👩‍🌾</div>
+                <div class="font-semibold">Equipo profesional</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 shadow flex flex-col items-center gap-2">
+                <div class="text-2xl">⚙️</div>
+                <div class="font-semibold">Tecnologías agrícolas</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seasons Grid with Modal -->
+        <section id="temporadas" class="mt-14 reveal px-4">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+              <h3 class="text-3xl sm:text-4xl font-bold text-[color:var(--verde-oscuro)] mb-3">Temporadas del Café</h3>
+              <p class="text-gray-600">Descubre cada etapa del ciclo productivo del café colombiano</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+              <!-- Florescencia -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="florescencia">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/florescencia.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="florescencia" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">🌸</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-[color:var(--verde-oscuro)] mb-2">Florescencia</h4>
+                  <p class="text-sm text-gray-600 mb-3">Las flores blancas del cafeto marcan el inicio del ciclo productivo...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+              <!-- Mitaca -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="mitaca">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/Mitaca.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="mitaca" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">☀️</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-[color:var(--cafe)] mb-2">Mitaca</h4>
+                  <p class="text-sm text-gray-600 mb-3">Cosecha secundaria que ocurre entre abril y junio en algunas zonas...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+              <!-- Recuperación -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="recuperacion">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/recuperacion.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="recuperacion" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">🌱</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-emerald-700 mb-2">Recuperación</h4>
+                  <p class="text-sm text-gray-600 mb-3">Periodo vital donde la planta restaura nutrientes y se prepara...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+              <!-- Cosecha Principal -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="cosecha">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/cosecha.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="cosecha" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">☕</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-red-800 mb-2">Cosecha Principal</h4>
+                  <p class="text-sm text-gray-600 mb-3">Entre octubre y enero se recolectan los granos maduros de café...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+              <!-- Secado -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="secado">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/secado.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="secado" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">🌾</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-amber-700 mb-2">Secado</h4>
+                  <p class="text-sm text-gray-600 mb-3">Proceso crítico para estabilizar la humedad del grano y preservar calidad...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+              <!-- Tostado -->
+              <article class="season-card bg-white rounded-2xl overflow-hidden shadow-lg" data-season="tostado">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="img/tostado.png" class="w-full h-full object-cover transition duration-700 hover:scale-110" alt="tostado" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-white">
+                    <span class="text-2xl">🔥</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <h4 class="font-bold text-lg text-[color:var(--cafe)] mb-2">Tostado</h4>
+                  <p class="text-sm text-gray-600 mb-3">Transformación química que desarrolla el aroma y sabor característicos...</p>
+                  <button class="text-[color:var(--verde-claro)] font-semibold text-sm hover:text-[color:var(--verde-oscuro)] transition">Ver más →</button>
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Modal -->
+        <div id="seasonModal" class="modal-backdrop">
+          <div class="modal-content">
+            <div id="modalHeader" class="relative h-64 overflow-hidden">
+              <img id="modalImage" src="" alt="" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+              <button id="closeModal" class="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-white/30 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div class="absolute bottom-4 left-6">
+                <span id="modalEmoji" class="text-4xl mb-2 block"></span>
+                <h3 id="modalTitle" class="text-3xl font-extrabold text-white"></h3>
+              </div>
+            </div>
+            <div class="p-6">
+              <div id="modalContent" class="text-gray-700 space-y-4"></div>
+              <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="bg-gradient-to-r from-[color:var(--verde-claro)]/20 to-[color:var(--crema)] rounded-xl p-4">
+                  <p class="text-sm text-gray-600 italic">💡 <span id="modalTip"></span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <section id="historia" class="mt-14 reveal px-4">
+          <div class="max-w-4xl mx-auto text-center bg-white rounded-2xl p-8 shadow">
+            <h3 class="text-2xl font-bold text-[color:var(--verde-oscuro)]">Nuestra Historia</h3>
+            <p class="mt-4 text-gray-700">Nacimos en el campo, entre tradición y esfuerzo. Desde hace años acompañamos a familias cafeteras implementando prácticas que preservan la tierra y potencian la calidad del grano. Crecemos con la comunidad y la tecnología al servicio del productor.</p>
+
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-[color:var(--verde-claro)] rounded-xl p-4 text-[color:var(--verde-oscuro)] font-semibold">+2 años construyendo</div>
+              <div class="bg-[color:var(--crema)] rounded-xl p-4 text-[color:var(--cafe)] font-semibold">Origen cafetero</div>
+              <div class="bg-white rounded-xl p-4 text-[color:var(--verde-oscuro)] font-semibold">tech + agro</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact / Footer CTA -->
+        <section id="contacto" class="mt-14 reveal px-4">
+          <div class="max-w-4xl mx-auto bg-[color:var(--verde-oscuro)] text-[color:var(--crema)] rounded-2xl p-8 text-center shadow-lg">
+            <h3 class="text-2xl font-bold">¿Listo para mejorar tu cultivo?</h3>
+            <p class="mt-3">Contáctanos para recibir asesoría técnica y programas de optimización.</p>
+            <div class="mt-4">
+              <a href="#" class="inline-block bg-[color:var(--verde-claro)] text-[color:var(--verde-oscuro)] px-6 py-3 rounded-full font-semibold hover:scale-105 transition">Escríbenos</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-[color:var(--verde-oscuro)] text-[color:var(--crema)] mt-12 rounded-t-3xl px-6 py-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div>
+            <h4 class="font-bold">Información</h4>
+            <ul class="mt-3 text-sm space-y-2">
+              <li>Políticas</li>
+              <li>Términos</li>
+              <li>Testimonios</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold">Recursos</h4>
+            <ul class="mt-3 text-sm space-y-2">
+              <li>Guías de pH</li>
+              <li>Blog</li>
+              <li>Interpretación del suelo</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold">Soporte</h4>
+            <ul class="mt-3 text-sm space-y-2">
+              <li>FAQ</li>
+              <li>Suscripciones</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold">Redes</h4>
+            <div class="mt-3 flex gap-3">
+              <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:scale-110 transition">f</a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:scale-110 transition">x</a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:scale-110 transition">ig</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-white/10 mt-8 pt-6 text-center text-sm">
+          © Fundación Escuela Tecnológica (FET) — Desarrolladores Daniel Rojas y Santiago Losada
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      menuBtn && menuBtn.addEventListener('click', ()=>{
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Simple reveal on scroll
+      const revealElems = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); })
+      },{threshold:0.15});
+      revealElems.forEach(el=>obs.observe(el));
+
+      // Season Modal Data
+      const seasonData = {
+        florescencia: {
+          emoji: '🌸',
+          title: 'Florescencia',
+          image: 'img/florescencia.png',
+          content: [
+            '<p class="text-lg font-semibold text-[color:var(--verde-oscuro)]">El Despertar del Cafeto</p>',
+            '<p>La florescencia es una de las etapas más hermosas y cruciales del ciclo del café. Durante esta fase, el cafeto se cubre de pequeñas flores blancas con un aroma delicado similar al jazmín.</p>',
+            '<p><strong>Duración:</strong> Las flores duran apenas 2-3 días, pero su impacto es fundamental.</p>',
+            '<p><strong>Condiciones ideales:</strong> Requiere temperaturas entre 17-23°C y un periodo de estrés hídrico seguido de lluvia para sincronizar la floración.</p>',
+            '<p><strong>Importancia:</strong> Esta etapa determina la cantidad de frutos que se desarrollarán y, por ende, la productividad de la cosecha.</p>'
+          ],
+          tip: 'Un buen manejo del pH del suelo durante esta etapa asegura flores saludables y mayor cuajamiento de frutos.'
+        },
+        mitaca: {
+          emoji: '☀️',
+          title: 'Mitaca',
+          image: 'img/Mitaca.png',
+          content: [
+            '<p class="text-lg font-semibold text-[color:var(--cafe)]">La Cosecha Secundaria</p>',
+            '<p>La mitaca es una cosecha secundaria que ocurre principalmente en zonas cafeteras con dos periodos de lluvia bien definidos. Es especialmente importante en regiones del centro de Colombia.</p>',
+            '<p><strong>Periodo:</strong> Generalmente ocurre entre abril y junio, aunque varía según la altitud y ubicación geográfica.</p>',
+            '<p><strong>Características:</strong> Aunque produce menor volumen que la cosecha principal, los granos de mitaca suelen tener excelente calidad debido a condiciones climáticas favorables.</p>',
+            '<p><strong>Ventaja económica:</strong> Permite a los caficultores tener dos periodos de ingresos en el año, estabilizando su economía familiar.</p>'
+          ],
+          tip: 'La mitaca bien manejada puede representar hasta el 30% de la producción anual de una finca cafetera.'
+        },
+        recuperacion: {
+          emoji: '🌱',
+          title: 'Recuperación',
+          image: 'img/recuperacion.png',
+          content: [
+            '<p class="text-lg font-semibold text-emerald-700">Renovación y Fortalecimiento</p>',
+            '<p>Después de la cosecha, las plantas de café necesitan un periodo de recuperación para restaurar sus reservas nutricionales y prepararse para el siguiente ciclo productivo.</p>',
+            '<p><strong>Actividades clave:</strong> Fertilización estratégica, control de arvenses, manejo de sombra y evaluación sanitaria de las plantas.</p>',
+            '<p><strong>Nutrición:</strong> Es el momento ideal para aplicar fertilizantes ricos en nitrógeno, fósforo y potasio según análisis de suelo.</p>',
+            '<p><strong>Podas:</strong> Se realizan podas sanitarias y de formación para eliminar ramas improductivas y estimular nuevo crecimiento.</p>',
+            '<p><strong>Duración:</strong> Puede extenderse de 2 a 4 meses dependiendo de las condiciones ambientales y el manejo agronómico.</p>'
+          ],
+          tip: 'Un buen manejo en la etapa de recuperación puede aumentar hasta un 40% la producción del siguiente ciclo.'
+        },
+        cosecha: {
+          emoji: '☕',
+          title: 'Cosecha Principal',
+          image: 'img/cosecha.png',
+          content: [
+            '<p class="text-lg font-semibold text-red-800">El Momento Más Esperado</p>',
+            '<p>La cosecha principal es el periodo de mayor actividad en la finca cafetera. En Colombia ocurre principalmente entre octubre y enero, aunque varía por región.</p>',
+            '<p><strong>Recolección selectiva:</strong> En Colombia se practica la recolección manual y selectiva, cosechando solo los granos maduros (rojos o amarillos según variedad).</p>',
+            '<p><strong>Múltiples pasadas:</strong> Los recolectores deben pasar varias veces por el mismo cafetal, ya que los frutos no maduran simultáneamente.</p>',
+            '<p><strong>Calidad:</strong> La recolección selectiva es clave para obtener café de especialidad y mejores precios en el mercado.</p>',
+            '<p><strong>Empleo:</strong> La cosecha genera miles de empleos temporales en zonas rurales, siendo un motor económico fundamental.</p>'
+          ],
+          tip: 'Cosechar en el punto óptimo de maduración garantiza el mejor perfil de taza y maximiza el valor del café.'
+        },
+        secado: {
+          emoji: '🌾',
+          title: 'Secado',
+          image: 'img/secado.png',
+          content: [
+            '<p class="text-lg font-semibold text-amber-700">Preservación de la Calidad</p>',
+            '<p>El secado es un proceso crítico que determina la calidad final del café. Consiste en reducir la humedad del grano desde ~55% hasta 10-12% para su almacenamiento seguro.</p>',
+            '<p><strong>Métodos tradicionales:</strong> Secado al sol en patios o marquesinas, requiere volteo constante y puede tomar 8-15 días.</p>',
+            '<p><strong>Secado mecánico:</strong> Uso de silos secadores que reducen el tiempo a 24-48 horas con control preciso de temperatura.</p>',
+            '<p><strong>Control de calidad:</strong> Se monitorea constantemente la humedad, temperatura y uniformidad del secado.</p>',
+            '<p><strong>Riesgos:</strong> Un secado muy rápido puede generar granos quebrados, mientras que uno muy lento favorece hongos y fermentaciones indeseadas.</p>'
+          ],
+          tip: 'El secado uniforme y controlado es tan importante como una buena cosecha para obtener café premium.'
+        },
+        tostado: {
+          emoji: '🔥',
+          title: 'Tostado',
+          image: 'img/tostado.png',
+          content: [
+            '<p class="text-lg font-semibold text-[color:var(--cafe)]">La Transformación Mágica</p>',
+            '<p>El tostado es donde el café verde se transforma en el producto aromático que todos conocemos. Es un proceso químico complejo que desarrolla más de 800 compuestos aromáticos.</p>',
+            '<p><strong>Proceso:</strong> Los granos se calientan a temperaturas entre 180-230°C durante 8-20 minutos según el nivel de tueste deseado.</p>',
+            '<p><strong>Reacciones químicas:</strong> Ocurre la reacción de Maillard y caramelización de azúcares, desarrollando sabores y aromas complejos.</p>',
+            '<p><strong>Niveles de tueste:</strong> Claro (suave, ácido), medio (balanceado), oscuro (intenso, menos ácido).</p>',
+            '<p><strong>Perfiles:</strong> Cada origen y variedad de café requiere un perfil de tueste específico para resaltar sus mejores características.</p>',
+            '<p><strong>Arte y ciencia:</strong> Los maestros tostadores combinan experiencia sensorial con tecnología de control preciso.</p>'
+          ],
+          tip: 'El café alcanza su mejor momento de sabor entre 3 y 14 días después del tostado. ¡Siempre busca café recién tostado!'
+        }
+      };
+
+      // Modal functionality
+      const modal = document.getElementById('seasonModal');
+      const closeModalBtn = document.getElementById('closeModal');
+      const seasonCards = document.querySelectorAll('.season-card');
+
+      seasonCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const season = card.dataset.season;
+          const data = seasonData[season];
+          
+          document.getElementById('modalEmoji').textContent = data.emoji;
+          document.getElementById('modalTitle').textContent = data.title;
+          document.getElementById('modalImage').src = data.image;
+          document.getElementById('modalImage').alt = data.title;
+          document.getElementById('modalContent').innerHTML = data.content.join('');
+          document.getElementById('modalTip').textContent = data.tip;
+          
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      closeModalBtn?.addEventListener('click', closeModal);
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    </script>
+  </body>
+</html>
