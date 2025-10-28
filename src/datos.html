@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/output.css" rel="stylesheet" />
+  <title>DATOS</title>
+<!-- Navbar -->
+<header class="w-full fixed top-0 left-0 py-5 bg-white/90 backdrop-blur-xl shadow-md border-b border-green-100 z-20">
+  <nav class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <span class="text-3xl text-green-600">🌿</span>
+      <h1 class="text-2xl font-bold tracking-wide text-green-700">AgroPH</h1>
+    </div>
+
+    <!-- Menú de navegación -->
+    <ul class="hidden md:flex space-x-6 font-medium text-green-700">
+      <li><a href="datos.html" class="hover:text-green-900 transition">Datos</a></li>
+      <li><a href="historial.html" class="hover:text-green-900 transition">Historial</a></li>
+      <li><a href="sugerencia.html" class="hover:text-green-900 transition">Sugerencia</a></li>
+    </ul>
+
+    <!-- Botón cerrar sesión -->
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        onclick="window.location.href='sesion.html'"
+        class="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg hover:from-green-700 hover:to-green-600 transition-all"
+      >
+        Cerrar sesión
+      </button>
+
+      <!-- Botón menú móvil -->
+      <button id="menuBtn" 
+              class="md:hidden p-4 rounded-lg bg-green-100 hover:bg-green-200 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="h-10 w-10 text-green-700" 
+             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+
+  <!-- Contenido principal -->
+  <main class="pt-28 px-6 max-w-6xl mx-auto">
+    <section class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-3xl font-bold text-green-700 text-center mb-3">Información de los Sensores</h2>
+      <p class="text-center text-gray-600 mb-6">
+        En esta sección se presentan los últimos <span class="font-semibold">10 registros del mes</span>,
+        con datos detallados sobre la <span class="text-green-700 font-medium">humedad</span>,
+        <span class="text-green-700 font-medium">temperatura</span> y <span class="text-green-700 font-medium">nivel de pH</span>.
+      </p>
+      <p class="text-center text-gray-500 italic mb-6">
+        Esta información es clave para el análisis y monitoreo de las condiciones ambientales del cultivo.
+      </p>
+
+      <!-- Tabla -->
+      <div class="overflow-x-auto">
+        <table class="w-full border border-green-300 border-collapse text-sm">
+          <thead class="bg-green-600 text-black text-sm uppercase tracking-wide">
+            <tr>
+               <th class="border border-green-400 px-4 py-3 text-left">Fecha</th>
+               <th class="border border-green-400 px-4 py-3 text-left">Humedad (%)</th>
+               <th class="border border-green-400 px-4 py-3 text-left">Temperatura (°C)</th>
+               <th class="border border-green-400 px-4 py-3 text-left">pH</th>
+            </tr>
+          </thead>
+
+          <tbody class="bg-white">
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-28 14:30:05</td>
+      <td class="border border-green-200 px-4 py-2">74</td>
+      <td class="border border-green-200 px-4 py-2">24.8</td>
+      <td class="border border-green-200 px-4 py-2">6.1</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-27 09:45:22</td>
+      <td class="border border-green-200 px-4 py-2">68</td>
+      <td class="border border-green-200 px-4 py-2">26.4</td>
+      <td class="border border-green-200 px-4 py-2">6.3</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-26 17:15:43</td>
+      <td class="border border-green-200 px-4 py-2">72</td>
+      <td class="border border-green-200 px-4 py-2">25.6</td>
+      <td class="border border-green-200 px-4 py-2">6.0</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-25 10:22:59</td>
+      <td class="border border-green-200 px-4 py-2">80</td>
+      <td class="border border-green-200 px-4 py-2">23.2</td>
+      <td class="border border-green-200 px-4 py-2">6.5</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-24 19:31:08</td>
+      <td class="border border-green-200 px-4 py-2">77</td>
+      <td class="border border-green-200 px-4 py-2">27.5</td>
+      <td class="border border-green-200 px-4 py-2">5.9</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-23 06:12:41</td>
+      <td class="border border-green-200 px-4 py-2">69</td>
+      <td class="border border-green-200 px-4 py-2">22.9</td>
+      <td class="border border-green-200 px-4 py-2">6.2</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-22 13:42:10</td>
+      <td class="border border-green-200 px-4 py-2">64</td>
+      <td class="border border-green-200 px-4 py-2">28.1</td>
+      <td class="border border-green-200 px-4 py-2">6.7</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-21 08:10:36</td>
+      <td class="border border-green-200 px-4 py-2">70</td>
+      <td class="border border-green-200 px-4 py-2">25.4</td>
+      <td class="border border-green-200 px-4 py-2">5.8</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-20 15:26:17</td>
+      <td class="border border-green-200 px-4 py-2">83</td>
+      <td class="border border-green-200 px-4 py-2">24.0</td>
+      <td class="border border-green-200 px-4 py-2">6.6</td>
+    </tr>
+    <tr class="hover:bg-green-50 transition">
+      <td class="border border-green-200 px-4 py-2">2025-10-19 07:54:05</td>
+      <td class="border border-green-200 px-4 py-2">75</td>
+      <td class="border border-green-200 px-4 py-2">26.9</td>
+      <td class="border border-green-200 px-4 py-2">5.7</td>
+    </tr>
+  </tbody>
+</table>
+
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="mt-10 py-6 text-center text-gray-600 text-sm">
+    © 2025 AgroPH — Monitoreo Inteligente del Cultivo de Café
+  </footer>
+
+  <!-- Script para cerrar sesión -->
+  <script>
+    function cerrarSesion() {
+      alert("Sesión cerrada correctamente.");
+      window.location.href = "index.html"; // redirige al login
+    }
+  </script>
+</body>
+</html>
