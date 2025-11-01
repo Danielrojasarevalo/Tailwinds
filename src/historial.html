@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/output.css" rel="stylesheet" />
+  <title>HISTORIAL</title>
+  
+  <style>
+    /* Paleta personalizada (tonos más suaves) */
+    :root{
+        --verde-oscuro:#32a641; /* dark green */
+        --verde-claro:#9CCF9B;  /* light green */
+        --cafe:#6B3E2A; /* coffee brown */
+        --crema:#F7F1E6; /* cream */
+    }
+    /* Fondo general suave en degradado verde pastel */
+    body{ background: linear-gradient(180deg, var(--verde-claro) 0%, #f8fff9 100%); }
+    /* Forzar títulos y todos los datos en negro (más específico para sobrescribir utilidades) */
+    h1, h2, h3, h4, h5, h6,
+    th, td,
+    main, main * {
+      color: #000 !important;
+    }
+    /* Navbar: solo los elementos de navegación en negro (sin tocar el botón de cerrar sesión) */
+    header .nav-text, header .nav-text * {
+      color: #000 !important;
+      fill: #000 !important;
+    }
+  </style>
+  <!-- Agregar jsPDF y autoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Navbar -->
+<header class="w-full fixed top-0 left-0 py-5 bg-[color:var(--verde-oscuro)]/80 backdrop-blur-xl shadow-md border-b border-[color:var(--verde-claro)] z-20">
+  <nav class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-2 nav-text">
+      <span class="text-3xl text-green-600">🌿</span>
+      <h1 class="text-2xl font-bold tracking-wide text-black">AgroPH</h1>
+    </div>
+
+    <!-- Menú de navegación -->
+    <ul class="hidden md:flex space-x-6 font-medium nav-text">
+      <li><a href="datos.html" class="hover:text-black transition">Datos</a></li>
+      <li><a href="historial.html" class="hover:text-black transition">Historial</a></li>
+      <li><a href="sugerencia.html" class="hover:text-black transition">Sugerencia</a></li>
+    </ul>
+
+    <!-- Botón cerrar sesión -->
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        onclick="window.location.href='sesion.html'"
+        class="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg hover:from-green-700 hover:to-green-600 transition-all logout-btn"
+      >
+        Cerrar sesión
+      </button>
+
+      <!-- Botón menú móvil -->
+      <button id="menuBtn" class="md:hidden p-4 rounded-lg bg-green-100 hover:bg-green-200 transition nav-text">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+
+    <!-- Contenido principal -->
+  <main class="pt-28 px-6 max-w-6xl mx-auto">
+    <section class="bg-[color:var(--crema)] rounded-2xl shadow-lg p-8">
+      <h2 class="text-3xl font-bold text-[color:var(--verde-oscuro)] text-center mb-3">Historial de Sensores</h2>
+      <p class="text-center text-gray-600 mb-6">
+        Aquí se encuentran los últimos <span class="font-semibold">10 registros</span> de los sensores, con datos sobre la <span class="text-green-700 font-medium">Humedad</span>, <span class="text-green-700 font-medium">Temperatura</span> y <span class="text-green-700 font-medium">pH</span>.
+      </p>
+
+      <!-- Buscador con calendario -->
+      <div class="flex justify-center mb-6">
+        <input 
+          type="date" 
+          id="fechaInput" 
+          class="border border-green-300 px-4 py-2 rounded-xl text-green-700 focus:outline-none focus:ring-2 focus:ring-green-600" 
+          onchange="filtrarPorFecha()"
+        />
+      </div>
+
+      <!-- Tabla -->
+      <div class="overflow-x-auto">
+        <table class="w-full border border-green-300 border-collapse text-sm" id="tablaSensores">
+          <thead class="bg-[color:var(--verde-oscuro)]/80 text-black text-sm uppercase tracking-wide">
+            <tr>
+               <th class="border border-green-400 px-4 py-3 text-left">Fecha</th>
+               <th class="border border-green-400 px-4 py-3 text-left">Humedad (%)</th>
+               <th class="border border-green-400 px-4 py-3 text-left">Temperatura (°C)</th>
+               <th class="border border-green-400 px-4 py-3 text-left">pH</th>
+            </tr>
+          </thead>
+
+          <tbody id="tablaCuerpo" class="bg-white">
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-28 14:30:05</td>
+              <td class="border border-green-200 px-4 py-2">74</td>
+              <td class="border border-green-200 px-4 py-2">24.8</td>
+              <td class="border border-green-200 px-4 py-2">6.1</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-27 09:45:22</td>
+              <td class="border border-green-200 px-4 py-2">68</td>
+              <td class="border border-green-200 px-4 py-2">26.4</td>
+              <td class="border border-green-200 px-4 py-2">6.3</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-26 17:15:43</td>
+              <td class="border border-green-200 px-4 py-2">72</td>
+              <td class="border border-green-200 px-4 py-2">25.6</td>
+              <td class="border border-green-200 px-4 py-2">6.0</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-25 10:22:59</td>
+              <td class="border border-green-200 px-4 py-2">80</td>
+              <td class="border border-green-200 px-4 py-2">23.2</td>
+              <td class="border border-green-200 px-4 py-2">6.5</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-24 19:31:08</td>
+              <td class="border border-green-200 px-4 py-2">77</td>
+              <td class="border border-green-200 px-4 py-2">27.5</td>
+              <td class="border border-green-200 px-4 py-2">5.9</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-23 06:12:41</td>
+              <td class="border border-green-200 px-4 py-2">69</td>
+              <td class="border border-green-200 px-4 py-2">22.9</td>
+              <td class="border border-green-200 px-4 py-2">6.2</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-22 13:42:10</td>
+              <td class="border border-green-200 px-4 py-2">64</td>
+              <td class="border border-green-200 px-4 py-2">28.1</td>
+              <td class="border border-green-200 px-4 py-2">6.7</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-21 08:10:36</td>
+              <td class="border border-green-200 px-4 py-2">70</td>
+              <td class="border border-green-200 px-4 py-2">25.4</td>
+              <td class="border border-green-200 px-4 py-2">5.8</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-20 15:26:17</td>
+              <td class="border border-green-200 px-4 py-2">83</td>
+              <td class="border border-green-200 px-4 py-2">24.0</td>
+              <td class="border border-green-200 px-4 py-2">6.6</td>
+            </tr>
+            <tr class="hover:bg-green-50 transition fila">
+              <td class="border border-green-200 px-4 py-2">2025-10-19 07:54:05</td>
+              <td class="border border-green-200 px-4 py-2">75</td>
+              <td class="border border-green-200 px-4 py-2">26.9</td>
+              <td class="border border-green-200 px-4 py-2">5.7</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Botón Descargar PDF -->
+      <div class="flex justify-center mt-6">
+        <button 
+          id="descargarPDF" 
+          class="bg-[color:var(--verde-oscuro)]/80 text-[color:var(--crema)] py-2 px-4 rounded-xl shadow-md flex items-center space-x-2"
+          onclick="descargarPDF()">
+          <span>📄</span>
+          <span>Descargar PDF</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="mt-10 py-6 text-center text-gray-600 text-sm">
+    © 2025 AgroPH — Monitoreo Inteligente del Cultivo de Café
+  </footer>
+
+  <script>
+    // Función para filtrar las filas según la fecha seleccionada
+    function filtrarPorFecha() {
+      const inputFecha = document.getElementById('fechaInput').value; // Obtiene el valor de la fecha seleccionada
+      const filas = document.querySelectorAll('.fila'); // Selecciona todas las filas de la tabla
+      filas.forEach(fila => {
+        const fechaFila = fila.cells[0].textContent.trim(); // Obtiene la fecha de la fila
+        if (fechaFila.startsWith(inputFecha)) {
+          fila.style.display = ''; // Muestra la fila si la fecha coincide
+        } else {
+          fila.style.display = 'none'; // Oculta la fila si la fecha no coincide
+        }
+      });
+    }
+
+    // Función para descargar el contenido de la tabla como PDF
+    function descargarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Captura la tabla
+      const tabla = document.getElementById('tablaSensores');
+      doc.autoTable({ html: tabla });
+
+      // Genera el PDF y lo descarga
+      doc.save('historial_de_sensores.pdf');
+    }
+  </script>
+</body>
+</html>
+
