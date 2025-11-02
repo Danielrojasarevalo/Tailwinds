@@ -27,27 +27,36 @@
       color: #000 !important;
       fill: #000 !important;
     }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000; /* Aseguramos que el navbar esté encima */
+      background-color: var(--verde-oscuro);
+      backdrop-filter: blur(10px); /* Aplica un filtro de desenfoque al fondo */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para resaltar el navbar */
+    }
   </style>
   <!-- Agregar jsPDF y autoTable -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
 <!-- Navbar -->
-<header class="w-full fixed top-0 left-0 py-5 bg-[color:var(--verde-oscuro)]/80 backdrop-blur-xl shadow-md border-b border-[color:var(--verde-claro)] z-20">
-  <nav class="max-w-7xl mx-auto px-8 flex justify-between items-center">
-    
-    <!-- Logo -->
-    <div class="flex items-center space-x-2 nav-text">
-      <span class="text-3xl text-green-600">🌿</span>
-      <h1 class="text-2xl font-bold tracking-wide text-black">AgroPH</h1>
-    </div>
+ <header class="w-full fixed top-0 left-0 py-5 bg-[color:var(--verde-oscuro)]/80 backdrop-blur-xl shadow-md border-b border-[color:var(--verde-claro)] z-20">
+    <nav class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <span class="text-3xl text-green-600">🌿</span>
+        <h1 class="text-2xl font-bold tracking-wide text-[color:var(--crema)]">AgroPH</h1>
+      </div>
 
-    <!-- Menú de navegación -->
-    <ul class="hidden md:flex space-x-6 font-medium nav-text">
-      <li><a href="datos.html" class="hover:text-black transition">Datos</a></li>
-      <li><a href="historial.html" class="hover:text-black transition">Historial</a></li>
-      <li><a href="sugerencia.html" class="hover:text-black transition">Sugerencia</a></li>
-    </ul>
+      <!-- Menú de navegación -->
+      <ul class="hidden md:flex space-x-6 font-medium text-[color:var(--crema)]">
+        <li><a href="datos.html" class="hover:text-[color:var(--verde-claro)] transition">Datos</a></li>
+        <li><a href="historial.html" class="hover:text-[color:var(--verde-claro)] transition">Historial</a></li>
+        <li><a href="sugerencia.html" class="hover:text-[color:var(--verde-claro)] transition">Sugerencia</a></li>
+      </ul>
 
     <!-- Botón cerrar sesión -->
     <div class="flex items-center gap-3">
